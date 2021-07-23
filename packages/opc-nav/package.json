@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "webpack serve",
     "build": "webpack --mode production",
+    "test": "npm run build && jest --verbose=true",
     "test:debug": "npm run build && DEBUG_MODE=1 jest --verbose=true"
   },
   "publishConfig": {

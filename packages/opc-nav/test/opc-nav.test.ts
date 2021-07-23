@@ -1,34 +1,46 @@
-import { axe, toHaveNoViolations } from 'jest-axe';
-import { OpcNav } from '../src/opc-nav';
+import { axe, toHaveNoViolations } from "jest-axe";
+import { OpcNav } from "../src/opc-nav";
 
 expect.extend(toHaveNoViolations);
 
-describe('opc-nav', () => {
+describe("opc-nav", () => {
+  const OPC_COMPONENT = "opc-nav";
+  const ELEMENT_ID = "opc-nav";
+  let opcNav: OpcNav;
 
-    const OPC_COMPONENT = 'opc-nav';
-    const ELEMENT_ID = 'opc-nav';
-    let opcElement: OpcNav;
+  const getShadowRoot = (tagName: string): ShadowRoot => {
+    return document.body.getElementsByTagName(tagName)[0].shadowRoot;
+  };
 
-    const getShadowRoot = (tagName: string): ShadowRoot => {
-        return document.body.getElementsByTagName(tagName)[0].shadowRoot;
-    }
+  beforeEach(() => {
+    opcNav = window.document.createElement(OPC_COMPONENT) as OpcNav;
+    document.body.appendChild(opcNav);
+  });
 
-    beforeEach(() => {
-        opcElement = window.document.createElement(OPC_COMPONENT) as OpcNav;
-        document.body.appendChild(opcElement);
-    });
+  afterEach(() => {
+    document.body.getElementsByTagName(OPC_COMPONENT)[0].remove();
+  });
 
-    afterEach(() => {
-       document.body.getElementsByTagName(OPC_COMPONENT)[0].remove();
-    });
+  it("is defined", async () => {
+    expect(opcNav).toBeDefined();
+  });
 
-    it('is defined', async () => {
-        expect(opcElement).toBeDefined();
-    });
+  it("has no axe violations", async () => {
+    expect(await axe(opcNav)).toHaveNoViolations();
+  });
 
-    it('has no axe violations', async () => {
-        expect(await axe(opcElement)).toHaveNoViolations()
-    });
+  it("should render nav menu links on attribute links", async () => {
+    opcNav.links = [{ name: "Blog", href: "#" }];
+    await opcNav.updateComplete;
+    expect(opcNav.links.length).toEqual(1);
+    expect(opcNav.links[0].name).toEqual("Blog");
+    expect(opcNav.links[0].href).toEqual("#");
+  });
 
-    // Add more tests here
+  it("should make search hidden", async () => {
+    expect(opcNav.isSearchHidden).toBeFalsy();
+    opcNav.isSearchHidden = true;
+    await opcNav.updateComplete;
+    expect(opcNav.isSearchHidden).toBeTruthy();
+  });
 });

@@ -4,35 +4,110 @@
 ![Build Status](https://travis-ci.org/dwyl/esta.svg?branch=master)
 [![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)](https://github.com/1-Platform/op-components/graphs/commit-activity)
 
-A web component based on Lit Element for Red Hat One Platform Navbar
+A web component based on Lit Element for Red hat One Platform Navigation Bar.
 
 ## Prerequisites
 
-<!-- Add if any -->
+Red Hat official font must be imported.
+
+```css
+@import url("https://fonts.googleapis.com/css2?family=Red+Hat+Text&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Red+Hat+Display&display=swap");
+```
 
 ## Usage
 
-<!-- Add usage here -->
+```html
+<opc-nav>
+  <img slot="opc-nav-logo" />
+</opc-nav>
+```
+
+Nav with links
 
 ```html
-<opc-nav></opc-nav>
+<opc-nav>
+  <img slot="opc-nav-logo" />
+</opc-nav>
+```
+
+```js
+const links = [
+  { name: "Blog", href: "#" },
+  { name: "Documentation", href: "#" },
+];
+document.querySelector("opc-nav").links = links;
 ```
 
 ## Slots
 
 <!-- Add Slots here -->
 
+There are total 4 slots of which 3 are optional and one is mandatory
+
+### Mandatory Slots
+
+- `opc-nav-logo`: To set the logo of the application in navbar. Suggested component would be an `<img/>`
+
+### Optional Slots
+
+- `opc-nav-menu-links`: Container component that contains various nav links. If not given and `links` attribute will be shown.
+
+- `opc-nav-search`: Container component that contains the search component.
+
+- `opc-nav-btn`: The buttons at end of the navbar used for various actions. If not provided by default `Notification Bell Button` and `Menu Button` will be shown with corresponding events.
+
 ## Attributes
 
-<!-- Add attributes here -->
+- `links`
+  - Type: `Array`
+  - Default value: [ ]
 
-## Themes
+```js
+document.querySelector("opc-nav").links = [{ name: "Blog", href: "#" }];
+```
 
-<!-- Change colors here -->
+- `isSearchHidden`
+  - Type: `Boolean`
+  - Default value: `false`
 
-| color   | hex                                                                     |
-| ------- | ----------------------------------------------------------------------- |
-| default | <span class="readme-color-preview" style="--bg:#ffffff"></span> #ffffff |
+```html
+<opc-nav isSearchHidden>
+  <img slot="opc-nav-logo" src="./logo.svg" height="28px" alt="logo" />
+</opc-nav>
+```
+
+## Events
+
+There are two events emitted by opc-nav both are dispatched on click of navbar notification(bell icon) and menu(grid icon) button.
+
+1. `opc-nav-btn-menu:click`
+
+Dispatched on menu(grid icon) button click.
+
+Example:
+
+```js
+document
+  .querySelector("opc-nav")
+  .addEventListener("opc-nav-btn-menu:click", function (event) {
+    alert("menu got clicked");
+  });
+```
+
+2. `opc-nav-btn-notification:click`
+
+Dispatched on notification(bell icon) button click.
+
+Example:
+
+```js
+document
+  .querySelector("opc-nav")
+  .addEventListener("opc-nav-btn-notification:click", function (event) {
+    alert("notification got clicked");
+  });
+```
 
 ## Install
 
@@ -122,4 +197,4 @@ npm run test
 
 ## 🤝 Contributors
 
-👤 **akhilmhdh**
+👤 **[akhilmhdh](https://github.com/akhilmhdh)**
